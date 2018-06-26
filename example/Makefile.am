@@ -7,6 +7,7 @@ SUBDIRS = classifier \
 	  ipsec_offload \
 	  l2fwd_simple \
 	  l3fwd \
+	  l2fwd \
 	  packet \
 	  switch \
 	  time \

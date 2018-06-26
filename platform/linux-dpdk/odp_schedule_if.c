@@ -22,6 +22,9 @@ extern const schedule_api_t schedule_basic_api;
 extern const schedule_fn_t schedule_iquery_fn;
 extern const schedule_api_t schedule_iquery_api;
 
+extern const schedule_fn_t schedule_eventdev_fn;
+extern const schedule_api_t schedule_eventdev_api;
+
 const schedule_fn_t *sched_fn;
 const schedule_api_t *sched_api;
 
@@ -143,7 +146,6 @@ int _odp_schedule_init_global(void)
 	if (sched == NULL || !strcmp(sched, "default"))
 		sched = ODP_SCHEDULE_DEFAULT;
 
-	ODP_PRINT("Using scheduler '%s'\n", sched);
 
 	if (!strcmp(sched, "basic")) {
 		sched_fn = &schedule_basic_fn;
@@ -154,10 +156,14 @@ int _odp_schedule_init_global(void)
 	} else if (!strcmp(sched, "iquery")) {
 		sched_fn = &schedule_iquery_fn;
 		sched_api = &schedule_iquery_api;
+	} else if (!strcmp(sched, "eventdev")) {
+		sched_fn = &schedule_eventdev_fn;
+		sched_api = &schedule_eventdev_api;
 	} else {
 		ODP_ABORT("Unknown scheduler specified via ODP_SCHEDULER\n");
 		return -1;
 	}
+	ODP_PRINT("Using scheduler '%s'\n", sched);
 
 	return sched_fn->init_global();
 }

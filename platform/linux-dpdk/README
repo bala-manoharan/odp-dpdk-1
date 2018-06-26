@@ -57,6 +57,9 @@ Enable pcap pmd to use ODP-DPDK without DPDK supported NIC's:
 Enable openssl crypto pmd to use openssl with odp-dpdk:
     sed -ri 's,(CONFIG_RTE_LIBRTE_PMD_OPENSSL=).*,\1y,' .config
 
+Add more queues to eventdev
+    sed -ri 's,(CONFIG_RTE_EVENT_MAX_QUEUES_PER_DEV=).*,\1255,' .config
+
 Now return to parent directory and build DPDK:
     cd ..
 

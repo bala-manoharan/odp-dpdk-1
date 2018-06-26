@@ -19,11 +19,10 @@
 #include <assert.h>
 #include <signal.h>
 
-#include <test_debug.h>
-
 #include <odp_api.h>
 #include <odp/helper/odph_api.h>
 
+#include <test_debug.h>
 /* Maximum number of worker threads */
 #define MAX_WORKERS            32
 
@@ -345,9 +344,9 @@ static int run_worker_sched_mode(void *arg)
 
 		pkts = odp_schedule_multi(NULL, ODP_SCHED_NO_WAIT, ev_tbl,
 					  MAX_PKT_BURST);
-
 		if (pkts <= 0)
 			continue;
+		printf("packets received:%d\n", pkts);
 
 		odp_packet_from_event_multi(pkt_tbl, ev_tbl, pkts);
 
