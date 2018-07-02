@@ -420,7 +420,7 @@ odp_pool_t odp_pool_create(const char *name, odp_pool_param_t *params)
 			mbp_ctor_arg.pkt.mbuf_data_room_size = blk_size;
 			num = params->pkt.num;
 
-			ODP_DBG("type: packet, name: %s, "
+			ODP_ERR("type: packet, name: %s, "
 				"num: %u, len: %u, blk_size: %u, "
 				"uarea_size %d, hdr_size %d\n",
 				pool_name, num, params->pkt.len, blk_size,
@@ -476,7 +476,16 @@ odp_pool_t odp_pool_create(const char *name, odp_pool_param_t *params)
 				 pool_name);
 		}
 
-		pool->rte_mempool =
+		if (params->type == ODP_POOL_PACKET) {
+			 pool->rte_mempool = rte_pktmbuf_pool_create(
+					rte_name ? rte_name : pool_name, /* mempool name */
+                         		num, /* number of elements*/
+                         		512, /* cache size*/
+                         		0,
+                         		RTE_MBUF_DEFAULT_BUF_SIZE,
+                         		rte_socket_id()); /* flags */
+		} else {
+			pool->rte_mempool =
 			rte_mempool_create(rte_name ? rte_name : pool_name,
 					   num,
 					   mb_size,
@@ -488,6 +497,7 @@ odp_pool_t odp_pool_create(const char *name, odp_pool_param_t *params)
 					   &mb_ctor_arg,
 					   rte_socket_id(),
 					   0);
+		}
 		free(rte_name);
 		if (pool->rte_mempool == NULL) {
 			ODP_ERR("Cannot init DPDK mbuf pool: %s\n",
