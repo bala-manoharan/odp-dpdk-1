@@ -372,7 +372,8 @@ static int run_worker_sched_mode(void *arg)
 
 		/* packets from the same queue are from the same interface */
 		src_idx = odp_packet_input_index(pkt_tbl[0]);
-		assert(src_idx >= 0);
+
+		//assert(src_idx >= 0);
 		dst_idx = gbl_args->dst_port_from_idx[src_idx];
 		fill_eth_addrs(pkt_tbl, pkts, dst_idx);
 
